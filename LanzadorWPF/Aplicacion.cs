@@ -18,56 +18,45 @@ namespace LanzadorAplicaciones
 	[Serializable]
 	public class Aplicacion
 	{
-		string nombre;
-		string ruta;
-		int hits;
+		public string Nombre {
+			get;
+			set;
+		}
+		
+		public string Ruta {
+			get;
+			set;
+		}
+		
+		public int Hits {
+			get;
+			set;
+		}		
 		
 		public Aplicacion(string nombre, string ruta)
 		{
-			SetRuta(ruta);
-			SetNombre(nombre);			
+			this.Nombre = nombre;
+			this.Ruta = ruta;
+			this.Hits = 0;
 		}
 		
 		public Aplicacion(string ruta)
 		{
 			int pos1 = ruta.LastIndexOf("\\") + 1;
 			int pos2 = ruta.Length;
-			SetNombre(ruta.Substring(pos1, pos2 - pos1));
-			SetRuta(ruta);
+			
+			this.Nombre = ruta.Substring(pos1, pos2 - pos1);
+			this.Ruta = ruta;
 		}
 		
-		public void SetRuta(string ruta) {
-			this.ruta = ruta;
+		public void Incrementar()
+		{
+			this.Hits++;
 		}
 		
-		public void SetNombre(string nombre) {
-			this.nombre = nombre;
+		public void Reiniciar() 
+		{
+			this.Hits = 0;
 		}
-		
-		public void SetHits() {
-			this.hits++;
-		}
-		
-		public string GetRuta() {
-			return this.ruta;
-		}
-		
-		public string GetNombre() {
-			return this.nombre;
-		}
-		
-		public int GetHits() {
-			return this.hits;
-		}
-		
-		public override string ToString() {
-			return GetNombre();
-		}
-		
-		public void ReiniciarHits() {
-			this.hits = 0;
-		}
-		
-		
 	}
 }

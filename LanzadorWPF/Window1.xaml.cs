@@ -40,19 +40,18 @@ namespace LanzadorWPF
 				AppLista = new AplicacionLista();
 			}
 			
-			LlenarListBox();
+			LlenarList();
 		}
 		
-		void LlenarListBox()
+		void LlenarList()
 		{
 			AppLista.Reordenar();
-			lstApp.ItemsSource = AppLista.ToArray();
+			LvApp.DataContext = AppLista.ToArray();
 		}
 		
 		void Guardar()
 		{
 			Serializador.Serializar(ARCHIVO, AppLista);
-			LlenarListBox();
 		}
 		
 		void Agregar()
@@ -64,31 +63,28 @@ namespace LanzadorWPF
 			if (open.ShowDialog() == true) {
 				Aplicacion app = new Aplicacion(open.FileName);
 				AppLista.Agregar(app);
-				Guardar();
 			}
 		}
 		
 		void Eliminar()
 		{
-			if (lstApp.SelectedItem == null)
+			if (LvApp.SelectedItem == null)
 				return;
 			
-			var temp = lstApp.SelectedItem as Aplicacion;
+			var temp = LvApp.SelectedItem as Aplicacion;
 			AppLista.Remover(temp);
-			Guardar();
 		}
 		
 		void Lanzar()
 		{
-			if (lstApp.SelectedItem == null)
+			if (LvApp.SelectedItem == null)
 				return;
 			
-			var temp = lstApp.SelectedItem as Aplicacion;
+			var temp = LvApp.SelectedItem as Aplicacion;
 			
 			try {
-				Process.Start(temp.GetRuta());
-				AppLista.GetElemento(temp.GetNombre()).SetHits();
-				Guardar();
+				Process.Start(temp.Ruta);
+				AppLista.GetElemento(temp.Nombre).Incrementar();
 			} catch(Exception ex) {
 				MessageBox.Show(ex.Message);
 			}
@@ -97,22 +93,35 @@ namespace LanzadorWPF
 		void btnLazar_Click(object sender, RoutedEventArgs e)
 		{
 			Lanzar();
+			LlenarList();
 		}
 		
 		void btnAgregar_Click(object sender, RoutedEventArgs e)
 		{
 			Agregar();
+			LlenarList();
 		}
 		
 		void btnEliminar_Click(object sender, RoutedEventArgs e)
 		{
 			Eliminar();
+			LlenarList();
 		}
 		
 		void btnReiniciar_Click(object sender, RoutedEventArgs e)
 		{
 			AppLista.ReiniciarHits();
+			LlenarList();
+		}
+		
+		void Window1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
 			Guardar();
+		}
+		
+		void LvApp_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			btnLazar_Click(sender, e);
 		}
 	}
 }

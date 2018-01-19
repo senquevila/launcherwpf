@@ -41,7 +41,7 @@ namespace LanzadorAplicaciones
 		public Aplicacion GetElemento(string nombre)
 		{
 			foreach (Aplicacion app in Aplicaciones) {
-				if (app.GetNombre().Equals(nombre)) {
+				if (app.Nombre.Equals(nombre)) {
 					return app;
 				}
 			}
@@ -69,7 +69,7 @@ namespace LanzadorAplicaciones
 			
 			var query =
 				from app in Aplicaciones				
-				orderby app.GetHits() descending, app.GetNombre()
+				orderby app.Hits descending, app.Nombre
 				select app;
 				
 			
@@ -90,7 +90,7 @@ namespace LanzadorAplicaciones
 				Aplicacion TmpApp;
 				
 				TmpApp = app;
-				TmpApp.ReiniciarHits();
+				TmpApp.Reiniciar();
 				Tmp.Add(TmpApp);
 			}
 			
